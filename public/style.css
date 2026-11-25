@@ -50,3 +50,16 @@ footer a:hover{color:#0e7c86}
 
 .im-lagoon{background-image:url(/img/lagoon.webp)}.im-hero{background-image:url(/img/hero.webp)}
 .d-hero{background-image:url(/img/hero.webp);background-position:30% 50%}.d-croatia{background-image:url(/img/croatia.webp)}.d-italy{background-image:url(/img/italy.webp)}.d-caribbean{background-image:url(/img/caribbean.webp)}
+
+#why .sub,#grow .sub{max-width:760px}
+.vs{display:grid;grid-template-columns:1fr 1fr;gap:22px}.vc{border-radius:24px;padding:28px;border:1px solid #e3e9ef}
+.vc h3{font-size:21px;margin-bottom:12px}.vc ul{list-style:none;padding:0}.vc li{padding:9px 0 9px 28px;position:relative;font-size:16px;color:#3b5068;border-top:1px solid rgba(16,36,58,.08)}
+.vc li:before{position:absolute;left:0;top:9px;font-weight:700}
+.vc.old{background:#f6f7f9}.vc.old li:before{content:"–";color:#8a99ab}
+.vc.new{background:linear-gradient(160deg,#eaf6f7,#dff0f2);border-color:#cfe7ea;box-shadow:0 10px 30px rgba(14,124,134,.12)}.vc.new li:before{content:"✓";color:#0e7c86}
+.flow{display:flex;align-items:stretch;gap:10px;margin-top:26px}.fb{flex:1;background:#fff;border:1px solid #e3e9ef;border-radius:18px;padding:18px;font-weight:700;font-size:17px;text-align:center;box-shadow:0 6px 18px rgba(16,36,58,.07)}
+.fb small{display:block;font-weight:500;color:#5b6f85;font-size:13px;margin-top:3px}.fb.hl{background:#0e7c86;color:#fff;border-color:#0e7c86}.fb.hl small{color:#d6eef0}
+.fa{align-self:center;width:22px;height:2px;background:#0e7c86;position:relative;flex:none}.fa:after{content:"";position:absolute;right:-1px;top:-4px;border-left:7px solid #0e7c86;border-top:5px solid transparent;border-bottom:5px solid transparent}
+.bn{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}.b3{border:1px solid #e3e9ef;border-radius:20px;padding:24px;background:#fff;box-shadow:0 8px 24px rgba(16,36,58,.06)}
+.b3 h3{font-size:18px;margin-bottom:6px}.b3 p{color:#4b6178;font-size:15px}
+@media(max-width:900px){.vs,.bn{grid-template-columns:1fr}.flow{flex-direction:column}.fa{width:2px;height:20px;align-self:center}.fa:after{right:-4px;top:auto;bottom:-1px;border-left:5px solid transparent;border-right:5px solid transparent;border-top:7px solid #0e7c86;border-bottom:0}}
