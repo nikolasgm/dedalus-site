@@ -89,3 +89,8 @@ footer a:hover{color:#0e7c86}
 .sc1:before,.sc2:before,.sc3:before{left:-40px;width:40px}
 .dc{grid-template-columns:1fr}
 @media(max-width:1100px){.scene{width:380px;margin-right:24px}.sc{width:200px}.sc0{width:160px}}
+.hero{background-image:url(/img/hero.webp);filter:none}
+.hero:after{background:linear-gradient(90deg,rgba(10,60,90,.55),rgba(10,60,90,.05) 65%)}
+.hero .hv{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(1.15) brightness(1.08)}
+.hero .t h1{text-shadow:0 2px 18px rgba(5,40,70,.45)}.hero p{text-shadow:0 1px 10px rgba(5,40,70,.5)}
+@media(prefers-reduced-motion:reduce),(max-width:900px){.hero .hv{display:none}}

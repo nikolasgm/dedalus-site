@@ -4,7 +4,7 @@ const types={'.html':'text/html; charset=utf-8','.css':'text/css','.js':'text/ja
 const KEY=process.env.BREVO_API_KEY||'',TO=process.env.REQUEST_TO||'hello@dedalus.travel',FROM=process.env.MAIL_FROM||'noreply@dedalus.travel';
 const hits=new Map();const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const clip=(s,n)=>String(s??'').replace(/[\r\n]+/g,' ').trim().slice(0,n);
-const headers={'X-Content-Type-Options':'nosniff','Referrer-Policy':'strict-origin-when-cross-origin','X-Frame-Options':'DENY','Content-Security-Policy':"default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",'Strict-Transport-Security':'max-age=31536000'};
+const headers={'X-Content-Type-Options':'nosniff','Referrer-Policy':'strict-origin-when-cross-origin','X-Frame-Options':'DENY','Content-Security-Policy':"default-src 'self'; img-src 'self' data:; media-src 'self'; style-src 'self'; script-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",'Strict-Transport-Security':'max-age=31536000'};
 async function handleRequest(req,res){let body='';for await(const c of req){body+=c;if(body.length>8000){res.writeHead(413,headers).end();return}}
  const ip=(req.headers['x-forwarded-for']||req.socket.remoteAddress||'').split(',')[0].trim(),now=Date.now(),list=(hits.get(ip)||[]).filter(t=>now-t<3600e3);
  if(list.length>=5){res.writeHead(429,headers).end();return}list.push(now);hits.set(ip,list);
