@@ -1,6 +1,6 @@
 import http from 'node:http';import {readFile} from 'node:fs/promises';import {join,normalize,extname} from 'node:path';import {fileURLToPath} from 'node:url';
 const root=join(fileURLToPath(new URL('.',import.meta.url)),'public');
-const types={'.html':'text/html; charset=utf-8','.css':'text/css','.js':'text/javascript','.webp':'image/webp','.png':'image/png','.ico':'image/x-icon','.txt':'text/plain','.xml':'application/xml'};
+const types={'.html':'text/html; charset=utf-8','.css':'text/css','.js':'text/javascript','.webp':'image/webp','.mp4':'video/mp4','.png':'image/png','.ico':'image/x-icon','.txt':'text/plain','.xml':'application/xml'};
 const KEY=process.env.BREVO_API_KEY||'',TO=process.env.REQUEST_TO||'hello@dedalus.travel',FROM=process.env.MAIL_FROM||'noreply@dedalus.travel';
 const hits=new Map();const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const clip=(s,n)=>String(s??'').replace(/[\r\n]+/g,' ').trim().slice(0,n);
@@ -25,5 +25,9 @@ http.createServer(async(req,res)=>{try{
  if(req.method!=='GET'&&req.method!=='HEAD'){res.writeHead(405,headers).end();return}
  if(p.endsWith('/'))p+='index.html';const f=normalize(join(root,p));if(!f.startsWith(root)){res.writeHead(403,headers).end();return}
  let data;try{data=await readFile(f)}catch{try{data=await readFile(join(f,'index.html'));}catch{res.writeHead(404,{...headers,'Content-Type':'text/plain'}).end('Not found');return}}
- const ext=extname(f)||'.html';res.writeHead(200,{...headers,'Content-Type':types[ext]||'application/octet-stream','Cache-Control':['.html','.css','.js'].includes(ext)?'no-cache':'public, max-age=86400'});res.end(req.method==='HEAD'?undefined:data)
+ const ext=extname(f)||'.html';
+ const rg=/^bytes=(\d*)-(\d*)$/.exec(req.headers.range||'');
+ if(ext==='.mp4'&&rg&&(rg[1]||rg[2])){const n=data.length;const s=rg[1]?Number(rg[1]):Math.max(0,n-Number(rg[2]));const e=rg[1]&&rg[2]?Math.min(Number(rg[2]),n-1):n-1;if(s>e||s>=n){res.writeHead(416,{...headers,'Content-Range':`bytes */${n}`}).end();return}
+  res.writeHead(206,{...headers,'Content-Type':'video/mp4','Accept-Ranges':'bytes','Content-Range':`bytes ${s}-${e}/${n}`,'Content-Length':e-s+1,'Cache-Control':'public, max-age=86400'});res.end(req.method==='HEAD'?undefined:data.subarray(s,e+1));return}
+ res.writeHead(200,{...headers,'Accept-Ranges':'bytes','Content-Type':types[ext]||'application/octet-stream','Cache-Control':['.html','.css','.js'].includes(ext)?'no-cache':'public, max-age=86400'});res.end(req.method==='HEAD'?undefined:data)
 }catch{res.writeHead(500,headers).end()}}).listen(Number(process.env.PORT)||3000,()=>console.log("listening"));
