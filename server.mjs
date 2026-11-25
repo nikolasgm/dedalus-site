@@ -25,5 +25,5 @@ http.createServer(async(req,res)=>{try{
  if(req.method!=='GET'&&req.method!=='HEAD'){res.writeHead(405,headers).end();return}
  if(p.endsWith('/'))p+='index.html';const f=normalize(join(root,p));if(!f.startsWith(root)){res.writeHead(403,headers).end();return}
  let data;try{data=await readFile(f)}catch{try{data=await readFile(join(f,'index.html'));}catch{res.writeHead(404,{...headers,'Content-Type':'text/plain'}).end('Not found');return}}
- const ext=extname(f)||'.html';res.writeHead(200,{...headers,'Content-Type':types[ext]||'application/octet-stream','Cache-Control':ext==='.html'?'no-cache':'public, max-age=86400'});res.end(req.method==='HEAD'?undefined:data)
+ const ext=extname(f)||'.html';res.writeHead(200,{...headers,'Content-Type':types[ext]||'application/octet-stream','Cache-Control':['.html','.css','.js'].includes(ext)?'no-cache':'public, max-age=86400'});res.end(req.method==='HEAD'?undefined:data)
 }catch{res.writeHead(500,headers).end()}}).listen(Number(process.env.PORT)||3000,()=>console.log("listening"));
