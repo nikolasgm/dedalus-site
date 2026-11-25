@@ -19,6 +19,7 @@ async function handleRequest(req,res){let body='';for await(const c of req){body
   await r.body?.cancel();res.writeHead(r.ok?200:502,headers).end('{}')}catch{res.writeHead(502,headers).end()}}
 http.createServer(async(req,res)=>{try{
  const url=new URL(req.url,'http://x');let p=decodeURIComponent(url.pathname);
+ if((req.headers.host||'').toLowerCase().split(':')[0]==='www.dedalus.travel'){res.writeHead(301,{...headers,Location:'https://dedalus.travel'+url.pathname+url.search}).end();return}
  if(p==='/health'){res.writeHead(200,headers).end('ok');return}
  if(p==='/api/request'&&req.method==='POST')return handleRequest(req,res);
  if(req.method!=='GET'&&req.method!=='HEAD'){res.writeHead(405,headers).end();return}
